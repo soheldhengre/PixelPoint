@@ -1,0 +1,6 @@
+framework module Pods_PixelPoint {
+  umbrella header "Pods-PixelPoint-umbrella.h"
+
+  export *
+  module * { export * }
+}
