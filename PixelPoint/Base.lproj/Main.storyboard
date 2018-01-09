@@ -24,7 +24,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" showsBuildings="NO" showsCompass="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gup-zb-IRx">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="811"/>
                             </mapView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nov-lH-Khe">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="78"/>
@@ -67,15 +67,15 @@
                             <constraint firstItem="nov-lH-Khe" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="1iQ-1J-aYq"/>
                             <constraint firstItem="Gup-zb-IRx" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="76c-wf-bNc"/>
                             <constraint firstAttribute="bottom" secondItem="Xzy-5E-jN7" secondAttribute="bottom" id="BWX-7Q-pRS"/>
+                            <constraint firstItem="Xzy-5E-jN7" firstAttribute="top" secondItem="MqO-bj-GzB" secondAttribute="bottom" constant="25" id="F5V-6D-Uz0"/>
                             <constraint firstItem="Gup-zb-IRx" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="JrL-4e-WUM"/>
-                            <constraint firstItem="Gup-zb-IRx" firstAttribute="bottom" secondItem="Xzy-5E-jN7" secondAttribute="bottom" id="X1N-CF-wbl"/>
                             <constraint firstItem="Xzy-5E-jN7" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="brO-nR-OGQ"/>
-                            <constraint firstItem="Xzy-5E-jN7" firstAttribute="top" secondItem="MqO-bj-GzB" secondAttribute="bottom" constant="25" id="fov-bU-TD4"/>
                             <constraint firstItem="nov-lH-Khe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="gq9-yh-7Bx"/>
                             <constraint firstItem="nov-lH-Khe" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="h78-kY-GrF"/>
                             <constraint firstItem="Gup-zb-IRx" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="hVl-rH-FVM"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="MqO-bj-GzB" secondAttribute="trailing" constant="15" id="l4p-qe-fHn"/>
                             <constraint firstAttribute="trailing" secondItem="Xzy-5E-jN7" secondAttribute="trailing" id="twu-Ud-bwP"/>
+                            <constraint firstItem="Xzy-5E-jN7" firstAttribute="top" secondItem="Gup-zb-IRx" secondAttribute="bottom" id="uvJ-HT-VY3"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
