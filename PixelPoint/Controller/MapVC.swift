@@ -9,6 +9,8 @@
 import UIKit
 import MapKit
 import CoreLocation
+import Alamofire
+import AlamofireImage
 
 class MapVC: UIViewController, UIGestureRecognizerDelegate {
 
@@ -20,12 +22,12 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var pullUpViewHeight: NSLayoutConstraint!
     
-    var spinner = UIActivityIndicatorView()
+    var spinner:UIActivityIndicatorView?
     var screenSize = UIScreen.main.bounds
     var progressLbl: UILabel?
     var collectionView: UICollectionView?
     var flowLayout = UICollectionViewFlowLayout()
-    
+    var imageUrlArray = [String]()
     override func viewDidLoad() {
         
         mapView.delegate = self
@@ -84,18 +86,18 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     
     func addSpinner(){
         spinner = UIActivityIndicatorView()
-        spinner.center = CGPoint(x: (screenSize.width/2)-(spinner.frame.width/2), y: 150)
-        spinner.activityIndicatorViewStyle = .whiteLarge
-        spinner.color = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
-        spinner.startAnimating()
-        collectionView?.addSubview(spinner)
+        spinner?.center = CGPoint(x: (screenSize.width/2)-((spinner?.frame.width)!/2), y: 150)
+        spinner?.activityIndicatorViewStyle = .whiteLarge
+        spinner?.color = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        spinner?.startAnimating()
+        collectionView?.addSubview(spinner!)
     }
     
-//    func removeSpinner(){
-//        if spinner != nil {
-//            spinner.removeFromSuperview()
-//        }
-//    }
+    func removeSpinner(){
+        if spinner != nil {
+            spinner?.removeFromSuperview()
+        }
+    }
    
     @IBAction func centreLocationPressed(_ sender: Any) {
         if authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse {
@@ -107,6 +109,23 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         pullUpViewHeight.constant = 300
         UIView.animate(withDuration: 0.04) {
             self.view.layoutIfNeeded()
+        }
+    }
+    
+    func retrieveUrls(forAnnotation annotation:DroppablePin, completion: @escaping (_ status:Bool)->()){
+        imageUrlArray = []
+        Alamofire.request(flickrUrl(forApiKey: apiKey, withAnnotation: annotation, andNumberOfPhotos: 40)).responseJSON { (response) in
+            guard let json = response.result.value as? Dictionary<String,AnyObject> else {return}
+            do {
+                let photoDict = json["photos"] as! Dictionary<String,AnyObject>
+                let photoDictArray = photoDict["photo"] as! [Dictionary<String,AnyObject>]
+                for photo in photoDictArray{
+                    let postUrl = "https://farm\(photo["farm"]!).staticflickr.com/\(photo["server"]!)/\(photo["id"]!)_\(photo["secret"]!)_h_d.jpg"
+                    self.imageUrlArray.append(postUrl)
+                }
+
+            }
+            completion(true)
         }
     }
 }
@@ -131,7 +150,7 @@ extension MapVC : MKMapViewDelegate{
     
     @objc func dropPin(sender: UITapGestureRecognizer){
         removeAnnotation()
-//        removeSpinner()
+        removeSpinner()
         removeProgressLbl()
         animateViewUpwards()
         addSwipe()
@@ -141,8 +160,11 @@ extension MapVC : MKMapViewDelegate{
         let touchCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
         let annotation = DroppablePin(coordinate: touchCoordinate, identifier: "droppablePin")
         mapView.addAnnotation(annotation)
-        let region = MKCoordinateRegionMakeWithDistance(touchCoordinate, regionRadius, regionRadius)
+        let region = MKCoordinateRegionMakeWithDistance(touchCoordinate, regionRadius*2.0, regionRadius*2.0)
         mapView.setRegion(region, animated: true)
+        retrieveUrls(forAnnotation: annotation) { (response) in
+            print(self.imageUrlArray)
+        }
     }
     
     func removeAnnotation(){
@@ -181,6 +203,11 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource{
         return cell!
     }
    }
+
+
+    
+
+
 
 
 
