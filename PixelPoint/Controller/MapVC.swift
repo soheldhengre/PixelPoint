@@ -29,6 +29,8 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     var flowLayout = UICollectionViewFlowLayout()
     var imageUrlArray = [String]()
     var imageArray = [UIImage]()
+    var photoTitle=[String]()
+    var photoOwner=[String]()
     override func viewDidLoad() {
         
         mapView.delegate = self
@@ -123,8 +125,12 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
                 let photoDictArray = photoDict["photo"] as! [Dictionary<String,AnyObject>]
                 for photo in photoDictArray{
                     let postUrl = "https://farm\(photo["farm"]!).staticflickr.com/\(photo["server"]!)/\(photo["id"]!)_\(photo["secret"]!)_h_d.jpg"
+                    let photoTitle = photo["title"] as! String
+                    let photoOwner = photo["owner"] as! String
                     self.imageUrlArray.append(postUrl)
-                }
+                    self.photoTitle.append(photoTitle)
+                    self.photoOwner.append(photoOwner)
+                   }
 
             }
             completion(true)
@@ -137,7 +143,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
                 guard let image = response.result.value else {return}
                 self.imageArray.append(image)
                 self.progressLbl?.text = "\(self.imageArray.count)/40 IMAGES DOWNLOADED"
-                if self.imageArray.count == self.imageUrlArray.count{
+                if self.imageArray.count == self.imageUrlArray.count && self.photoOwner.count == self.photoTitle.count{
                     completion(true)
                 }
             })
@@ -173,6 +179,8 @@ extension MapVC : MKMapViewDelegate{
     @objc func dropPin(sender: UITapGestureRecognizer){
         imageArray = []
         imageUrlArray = []
+        photoOwner = []
+        photoTitle = []
         removeAnnotation()
         removeSpinner()
         removeProgressLbl()
@@ -242,16 +250,18 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let popVC = storyboard?.instantiateViewController(withIdentifier: "popVC") as? PopVC else {return}
-        popVC.initData(forImage: imageArray[indexPath.row])
+        let Title = photoTitle[indexPath.row]
+        let Owner = photoOwner[indexPath.row]
+        popVC.initData(forImage: imageArray[indexPath.row], fortitle: Title, and: Owner)
         present(popVC, animated: true, completion: nil)
     }
    }
 
 extension MapVC: UIViewControllerPreviewingDelegate{
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let index = collectionView?.indexPathForItem(at: location), let cell = collectionView?.cellForItem(at: index) else {return nil}
+        guard let indexPath = collectionView?.indexPathForItem(at: location), let cell = collectionView?.cellForItem(at: indexPath) else {return nil}
         guard let popVC = storyboard?.instantiateViewController(withIdentifier: "popVC") as? PopVC else {return nil}
-        popVC.initData(forImage: imageArray[index.row])
+        popVC.initData(forImage: imageArray[indexPath.row], fortitle: photoTitle[indexPath.row], and: photoOwner[indexPath.row])
         previewingContext.sourceRect = cell.contentView.frame
         return popVC
     }
