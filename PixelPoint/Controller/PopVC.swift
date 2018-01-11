@@ -3,7 +3,7 @@
 //  PixelPoint
 //
 //  Created by Sohel Dhengre on 10/01/18.
-//  Copyright © 2018 Sohel Dengre. All rights reserved.
+//  Copyright © 2018 Sohel Dhengre. All rights reserved.
 //
 
 import UIKit
