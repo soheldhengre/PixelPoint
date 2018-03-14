@@ -118,7 +118,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     
     func retrieveUrls(forAnnotation annotation:DroppablePin, completion: @escaping (_ status:Bool)->()){
         
-        Alamofire.request(flickrUrl(forApiKey: apiKey, withAnnotation: annotation, andNumberOfPhotos: 40)).responseJSON { (response) in
+       Alamofire.request(flickrUrl(forApiKey: apiKey, withAnnotation: annotation, andNumberOfPhotos: 40)).responseJSON { (response) in
             guard let json = response.result.value as? Dictionary<String,AnyObject> else {return}
             do {
                 let photoDict = json["photos"] as! Dictionary<String,AnyObject>
