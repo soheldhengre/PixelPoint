@@ -2,8 +2,12 @@
 <br>
 This app lets you download images of a particular location where you double tap on the map.<br>
 
-Pods Used :
-
+### Pods Used :
+```pod 'Alamofire', '~> 4.5'```
+```pod 'AlamofireImage', '~> 3.3'```
+<br>
+### API Used : 
+Flickr API
 
 
 
