@@ -8,7 +8,8 @@ This app lets you download images of a particular location where you double tap 
 <br>
 ### API Used : 
 Flickr API
-
+<br>
+### Screenshots: 
 
 
 
