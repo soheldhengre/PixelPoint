@@ -1,8 +1,9 @@
 # PixelPoint 
 <br>
-This app lets you download images of a particular location where you double tap on the map.
-<br>
+This app lets you download images of a particular location where you double tap on the map.<br>
+
 Pods Used :
+
 
 
 
